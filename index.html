@@ -1,0 +1,656 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeRush - Typing Speed Test</title>
+
+<style>
+:root {
+    --bg: #080b16;
+    --panel: #11182a;
+    --cyan: #00e5ff;
+    --purple: #a855f7;
+    --text: #f4f7ff;
+    --muted: #98a5c3;
+    --green: #39e58c;
+    --red: #ff5577;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at top, #172447 0%, transparent 55%),
+        var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 7%;
+    border-bottom: 1px solid #ffffff12;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+.logo span { color: var(--cyan); }
+
+.status {
+    color: var(--green);
+    font-size: 13px;
+}
+
+main {
+    width: min(900px, 92%);
+    margin: 45px auto;
+}
+
+.hero { text-align: center; }
+
+.hero h1 {
+    margin-bottom: 10px;
+    font-size: clamp(35px, 6vw, 58px);
+}
+
+.hero h1 span {
+    color: var(--cyan);
+    text-shadow: 0 0 25px #00e5ff55;
+}
+
+.hero p {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.card {
+    margin-top: 30px;
+    padding: 28px;
+    border: 1px solid #ffffff16;
+    border-radius: 20px;
+    background: #11182aeF;
+    box-shadow: 0 15px 60px #00000030;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 14px;
+}
+
+.control {
+    flex: 1;
+    min-width: 130px;
+}
+
+label {
+    display: block;
+    margin-bottom: 9px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+select {
+    width: 100%;
+    padding: 12px;
+    color: var(--text);
+    background: #080e1d;
+    border: 1px solid #34415e;
+    border-radius: 9px;
+    outline: none;
+}
+
+select:focus, textarea:focus {
+    border-color: var(--cyan);
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 25px 0;
+}
+
+.stat {
+    padding: 18px 8px;
+    text-align: center;
+    background: #0b1222;
+    border: 1px solid #ffffff0e;
+    border-radius: 13px;
+}
+
+.stat-value {
+    display: block;
+    color: var(--cyan);
+    font-size: clamp(23px, 4vw, 32px);
+    font-weight: bold;
+}
+
+.stat-label {
+    display: block;
+    margin-top: 7px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+#textDisplay {
+    min-height: 145px;
+    padding: 22px;
+    border-radius: 12px;
+    background: #080d19;
+    border: 1px solid #ffffff12;
+    color: #7785a6;
+    font-size: 20px;
+    line-height: 1.9;
+    overflow-wrap: anywhere;
+}
+
+#textDisplay .correct { color: var(--green); }
+#textDisplay .incorrect {
+    color: var(--red);
+    background: #ff557722;
+    border-radius: 3px;
+}
+#textDisplay .current {
+    border-left: 2px solid var(--cyan);
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    50% { border-color: transparent; }
+}
+
+textarea {
+    display: block;
+    width: 100%;
+    min-height: 110px;
+    margin-top: 16px;
+    padding: 16px;
+    resize: vertical;
+    color: white;
+    background: #0b1222;
+    border: 1px solid #34415e;
+    border-radius: 12px;
+    outline: none;
+    font: 17px/1.6 Arial, sans-serif;
+}
+
+textarea:disabled { opacity: .65; }
+
+.buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+button {
+    padding: 14px 20px;
+    border: 0;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: transform .15s, background .15s;
+}
+
+button:hover { transform: translateY(-2px); }
+
+.primary {
+    flex: 1;
+    color: #061018;
+    background: var(--cyan);
+}
+
+.primary:hover { background: #7af3ff; }
+
+.secondary {
+    color: white;
+    background: #26334d;
+}
+
+.message {
+    min-height: 25px;
+    margin: 18px 0 0;
+    text-align: center;
+    color: var(--green);
+    font-weight: bold;
+}
+
+.extra {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.extra-box {
+    padding: 20px;
+    border: 1px solid #ffffff12;
+    background: #0b1222;
+    border-radius: 13px;
+}
+
+.extra-box h3 {
+    margin-top: 0;
+    font-size: 16px;
+}
+
+.extra-box p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+#bestScore, #bestAccuracy { color: var(--cyan); }
+
+footer {
+    padding: 20px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+@media (max-width: 600px) {
+    header { padding: 18px 5%; }
+    main { margin: 28px auto; }
+    .card { padding: 18px; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .extra { grid-template-columns: 1fr; }
+    #textDisplay { font-size: 17px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">Type<span>Rush</span></div>
+    <div class="status">● TYPING ARENA</div>
+</header>
+
+<main>
+    <section class="hero">
+        <h1>Ready, Set, <span>Type!</span></h1>
+        <p>Race your fingers. Beat your best. Become a typing champion.</p>
+    </section>
+
+    <section class="card">
+        <div class="controls">
+            <div class="control">
+                <label for="duration">TEST DURATION</label>
+                <select id="duration">
+                    <option value="30">30 Seconds</option>
+                    <option value="60" selected>60 Seconds</option>
+                    <option value="120">120 Seconds</option>
+                </select>
+            </div>
+
+            <div class="control">
+                <label for="difficulty">DIFFICULTY</label>
+                <select id="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+
+            <div class="control">
+                <label for="sound">SOUND EFFECTS</label>
+                <select id="sound">
+                    <option value="on" selected>On</option>
+                    <option value="off">Off</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <span class="stat-value" id="time">60</span>
+                <span class="stat-label">SECONDS LEFT</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value" id="wpm">0</span>
+                <span class="stat-label">WPM</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value" id="accuracy">100%</span>
+                <span class="stat-label">ACCURACY</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value" id="errors">0</span>
+                <span class="stat-label">ERRORS</span>
+            </div>
+        </div>
+
+        <div id="textDisplay" aria-label="Text to type"></div>
+
+        <textarea id="typingInput"
+            placeholder="Press Start Test and begin typing here..."
+            disabled
+            spellcheck="false"
+            autocomplete="off"
+            autocapitalize="off"></textarea>
+
+        <div class="buttons">
+            <button class="primary" id="startButton">Start Test</button>
+            <button class="secondary" id="resetButton">Restart ↻</button>
+        </div>
+
+        <p class="message" id="message" aria-live="polite">
+            Choose your settings and start typing!
+        </p>
+    </section>
+
+    <section class="extra">
+        <div class="extra-box">
+            <h3>🏆 Personal Best</h3>
+            <p>Your best WPM: <strong id="bestScore">0</strong></p>
+            <p>Best accuracy: <strong id="bestAccuracy">100%</strong></p>
+            <p>Your records are saved in this browser.</p>
+        </div>
+
+        <div class="extra-box">
+            <h3>⚡ How to Play</h3>
+            <p>1. Choose a time and difficulty.</p>
+            <p>2. Type the displayed sentence accurately.</p>
+            <p>3. Improve your speed and beat your record!</p>
+        </div>
+    </section>
+</main>
+
+<footer>TypeRush © 2026 · Practice. Improve. Repeat.</footer>
+
+<script>
+const sentenceBank = {
+    easy: [
+        "The sun is shining and the sky is blue.",
+        "Practice every day to become a better typist.",
+        "Small steps can lead to great achievements.",
+        "Reading books helps us learn new things.",
+        "Keep calm and do your best every day.",
+        "A good habit can make life much better.",
+        "Learning something new is always exciting.",
+        "Hard work and patience bring good results."
+    ],
+
+    medium: [
+        "Technology connects people and creates opportunities around the world.",
+        "A skilled programmer solves problems through patience and logical thinking.",
+        "Consistent practice helps improve typing speed and accuracy over time.",
+        "Every new challenge gives us a chance to learn something valuable.",
+        "Creative ideas often begin with curiosity and a willingness to explore.",
+        "Building good habits today can create a stronger future tomorrow.",
+        "Focus on accuracy first, and speed will gradually follow.",
+        "Success is the result of preparation, persistence, and continuous improvement."
+    ],
+
+    hard: [
+        "Efficient problem-solving requires curiosity, concentration, and logical reasoning.",
+        "Modern technology transforms communication, education, engineering, and scientific research.",
+        "Precision matters: small mistakes can produce unexpected results in complex systems.",
+        "Successful innovation combines imagination, experimentation, analysis, and persistence.",
+        "Reliable software depends on thoughtful design, careful testing, and continuous improvement.",
+        "Digital communication allows information to travel across continents within seconds.",
+        "Developers must balance performance, security, accessibility, and maintainability.",
+        "Complex challenges become manageable when divided into smaller, measurable tasks."
+    ]
+};
+
+const display = document.getElementById("textDisplay");
+const input = document.getElementById("typingInput");
+const durationSelect = document.getElementById("duration");
+const difficultySelect = document.getElementById("difficulty");
+const soundSelect = document.getElementById("sound");
+
+let passage = "";
+let timeLeft = 60;
+let timer = null;
+let startTime = 0;
+let running = false;
+let finished = false;
+let previousSentence = "";
+
+function getRandomSentence() {
+    const choices = sentenceBank[difficultySelect.value];
+    let sentence;
+
+    do {
+        sentence = choices[Math.floor(Math.random() * choices.length)];
+    } while (choices.length > 1 && sentence === previousSentence);
+
+    previousSentence = sentence;
+    return sentence;
+}
+
+function generateSentence() {
+    passage = getRandomSentence();
+    display.textContent = "";
+
+    for (let i = 0; i < passage.length; i++) {
+        const span = document.createElement("span");
+        span.textContent = passage[i];
+
+        if (i === 0) span.classList.add("current");
+        display.appendChild(span);
+    }
+}
+
+function resetStats() {
+    document.getElementById("wpm").textContent = "0";
+    document.getElementById("accuracy").textContent = "100%";
+    document.getElementById("errors").textContent = "0";
+    document.getElementById("time").textContent = durationSelect.value;
+}
+
+function prepareTest() {
+    clearInterval(timer);
+    running = false;
+    finished = false;
+    timeLeft = Number(durationSelect.value);
+
+    input.value = "";
+    input.disabled = true;
+
+    generateSentence();
+    resetStats();
+
+    document.getElementById("message").textContent =
+        "Choose your settings and start typing!";
+
+    document.getElementById("startButton").textContent = "Start Test";
+}
+
+function startTest() {
+    clearInterval(timer);
+
+    timeLeft = Number(durationSelect.value);
+    running = true;
+    finished = false;
+    startTime = Date.now();
+
+    input.value = "";
+    input.disabled = false;
+
+    // Always choose a fresh sentence on every restart.
+    generateSentence();
+    resetStats();
+
+    document.getElementById("message").textContent = "Go! Keep typing...";
+    document.getElementById("startButton").textContent = "Restart Test";
+
+    input.focus();
+
+    timer = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        timeLeft = Math.max(0, Number(durationSelect.value) - elapsed);
+
+        document.getElementById("time").textContent = timeLeft;
+        updateStats();
+
+        if (timeLeft <= 0) finishTest();
+    }, 200);
+}
+
+function playBeep(frequency = 600) {
+    if (soundSelect.value !== "on") return;
+
+    try {
+        const AudioContextClass =
+            window.AudioContext || window.webkitAudioContext;
+
+        if (!AudioContextClass) return;
+
+        const audio = new AudioContextClass();
+        const oscillator = audio.createOscillator();
+        const gain = audio.createGain();
+
+        oscillator.frequency.value = frequency;
+        gain.gain.value = 0.035;
+
+        oscillator.connect(gain);
+        gain.connect(audio.destination);
+
+        oscillator.start();
+        oscillator.stop(audio.currentTime + 0.06);
+        oscillator.onended = () => audio.close();
+    } catch (error) {
+        // Sound is optional; typing still works without it.
+    }
+}
+
+function updateStats() {
+    const typed = input.value;
+    let correct = 0;
+    let errors = 0;
+
+    for (let i = 0; i < typed.length; i++) {
+        if (i < passage.length && typed[i] === passage[i]) {
+            correct++;
+        } else {
+            errors++;
+        }
+    }
+
+    const elapsedSeconds = Math.max((Date.now() - startTime) / 1000, 1);
+    const elapsedMinutes = elapsedSeconds / 60;
+
+    const wpm = Math.round((correct / 5) / elapsedMinutes);
+    const accuracy = typed.length === 0
+        ? 100
+        : Math.round((correct / typed.length) * 100);
+
+    document.getElementById("wpm").textContent = wpm;
+    document.getElementById("accuracy").textContent = accuracy + "%";
+    document.getElementById("errors").textContent = errors;
+
+    const spans = display.querySelectorAll("span");
+
+    spans.forEach((span, index) => {
+        span.classList.remove("correct", "incorrect", "current");
+
+        if (index < typed.length) {
+            if (typed[index] === passage[index]) {
+                span.classList.add("correct");
+            } else {
+                span.classList.add("incorrect");
+            }
+        } else if (index === typed.length) {
+            span.classList.add("current");
+        }
+    });
+
+    if (typed.length >= passage.length && running) {
+        finishTest();
+    }
+}
+
+function finishTest() {
+    if (!running || finished) return;
+
+    running = false;
+    finished = true;
+    clearInterval(timer);
+    input.disabled = true;
+
+    const wpm = Number(document.getElementById("wpm").textContent);
+    const accuracy = Number(
+        document.getElementById("accuracy").textContent.replace("%", "")
+    );
+
+    saveBest(wpm, accuracy);
+
+    document.getElementById("message").textContent =
+        "Test complete! You achieved " + wpm + " WPM.";
+    document.getElementById("startButton").textContent = "Try Again";
+
+    playBeep(850);
+}
+
+function saveBest(wpm, accuracy) {
+    try {
+        const oldWpm = Number(localStorage.getItem("typerush_best_wpm") || 0);
+        const oldAccuracy = Number(
+            localStorage.getItem("typerush_best_accuracy") || 100
+        );
+
+        if (wpm > oldWpm) {
+            localStorage.setItem("typerush_best_wpm", String(wpm));
+            document.getElementById("bestScore").textContent = wpm;
+        }
+
+        if (wpm >= oldWpm && accuracy > oldAccuracy) {
+            localStorage.setItem("typerush_best_accuracy", String(accuracy));
+            document.getElementById("bestAccuracy").textContent = accuracy + "%";
+        } else {
+            loadBest();
+        }
+    } catch (error) {
+        // The test works even if browser storage is unavailable.
+    }
+}
+
+function loadBest() {
+    try {
+        document.getElementById("bestScore").textContent =
+            localStorage.getItem("typerush_best_wpm") || "0";
+
+        document.getElementById("bestAccuracy").textContent =
+            (localStorage.getItem("typerush_best_accuracy") || "100") + "%";
+    } catch (error) {
+        document.getElementById("bestScore").textContent = "0";
+        document.getElementById("bestAccuracy").textContent = "100%";
+    }
+}
+
+input.addEventListener("input", () => {
+    if (!running) return;
+
+    updateStats();
+
+    if (running) playBeep(600);
+});
+
+document.getElementById("startButton").addEventListener("click", startTest);
+document.getElementById("resetButton").addEventListener("click", prepareTest);
+
+durationSelect.addEventListener("change", prepareTest);
+difficultySelect.addEventListener("change", prepareTest);
+
+generateSentence();
+resetStats();
+loadBest();
+</script>
+
+</body>
+</html>
